@@ -1,4 +1,4 @@
-package org.africalib.gallery.backend;
+package org.shop.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

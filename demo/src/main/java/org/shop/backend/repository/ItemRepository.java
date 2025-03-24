@@ -1,6 +1,6 @@
-package org.africalib.gallery.backend.repository;
+package org.shop.backend.repository;
 
-import org.africalib.gallery.backend.entity.Item;
+import org.shop.backend.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /*************************************************************

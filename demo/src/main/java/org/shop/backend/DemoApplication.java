@@ -1,4 +1,4 @@
-package org.africalib.gallery.backend;
+package org.shop.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
