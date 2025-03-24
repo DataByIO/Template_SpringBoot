@@ -1,11 +1,11 @@
 package org.shop.backend.Product.Service;
 import org.shop.backend.Product.Model.Product;
-
 import java.util.HashMap;
+import java.util.List;
 
 /*************************************************************
  /* SYSTEM NAME      : Service
- /* PROGRAM NAME     : MemberService.interface
+ /* PROGRAM NAME     : ProductService.interface
  /* DESCRIPTION      :
  /* MODIFIVATION LOG :
  /* DATA         AUTHOR          DESC.
@@ -14,5 +14,5 @@ import java.util.HashMap;
  /*************************************************************/
 
 public interface ProductService {
-    public HashMap<String, Object> userInfo(Product product) throws Exception;
+    public List<Product> itemsList() throws Exception;
 }

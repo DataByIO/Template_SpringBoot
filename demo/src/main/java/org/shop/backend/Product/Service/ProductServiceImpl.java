@@ -1,15 +1,15 @@
 package org.shop.backend.Product.Service;
-
-import org.shop.backend.Member.Service.MemberMapper;
+import org.apache.ibatis.session.SqlSession;
 import org.shop.backend.Product.Model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 /*************************************************************
  /* SYSTEM NAME      : Service
- /* PROGRAM NAME     : MemberServiceImpl.class
+ /* PROGRAM NAME     : ProductServiceImpl.class
  /* DESCRIPTION      :
  /* MODIFIVATION LOG :
  /* DATA         AUTHOR          DESC.
@@ -17,14 +17,14 @@ import java.util.HashMap;
  /*2025.03.24   KIMDONGMIN   INTIAL RELEASE
  /*************************************************************/
 
-@Service("MemberService")
+@Service("ProductService")
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private MemberMapper memberMapper;
+    private ProductMapper productMapper;
 
     @Override
-    public HashMap<String, Object> userInfo(Product product) throws Exception {
-        return memberMapper.userInfo(product);
+    public List<Product> itemsList() throws Exception {
+        return productMapper.itemsList();
         }
 }

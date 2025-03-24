@@ -9,6 +9,6 @@ import java.util.HashMap;
 @Mapper
 public interface MemberMapper {
 
-    public HashMap<String, Object> userInfo(Member member);
+    public HashMap<String, Object> userInfo(Member member) throws Exception;
 
 }
