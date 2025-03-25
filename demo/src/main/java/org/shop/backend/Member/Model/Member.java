@@ -15,17 +15,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "members")
 public class Member {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동증가가 될 수 있는 값인걸 명시
     private int id;
-
-    @Column(length = 50, nullable = false, unique = true)
     private String email;
-
-    @Column(length = 100 , nullable = false)// null을 허용하지 않음
     private String password;
 }
