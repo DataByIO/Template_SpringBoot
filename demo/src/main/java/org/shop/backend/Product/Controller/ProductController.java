@@ -3,6 +3,7 @@ package org.shop.backend.Product.Controller;
 import org.shop.backend.Product.Model.Product;
 import org.shop.backend.Product.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,8 +26,8 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/api/items")
-    public List<Product> getItems() throws Exception {
+    public ResponseEntity getItems() throws Exception {
         List<Product> items = productService.itemsList();
-        return items;
+        return ResponseEntity.ok(items);
     }
 }

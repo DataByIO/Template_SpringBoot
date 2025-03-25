@@ -37,8 +37,6 @@ public class MemberController {
     //유저 정보 불러오기
     @PostMapping("/api/account/login")
     public ResponseEntity login(@RequestBody Member member, HttpServletResponse res) throws Exception {
-        HashMap<String, Object> resultMap = new HashMap<String, Object>();
-
         HashMap<String, Object> userInfoMap = memberService.userInfo(member);
         //조회한 유저의 컬럼ID를 가져옴 (컬럼ID의 값임.)
         if(userInfoMap.get("id") != null) {
@@ -57,6 +55,31 @@ public class MemberController {
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
+    //요청 데이터를 String Object 형식으로 받아옴: Key Value
+    @PostMapping("/경로/경로")
+    public void init(@RequestBody HashMap<String, Object> map) {
+        System.out.println(map);
+        //데이터를 꺼내옴
+        //String name = map.get("name");
+        //int age = map.get("age");
+        // name=vita, age=25 출력
+
+        //데이터를 넣어줌(존재하는 Key값이 있다면 수정도 가능)
+        //hashMap.put("name", "ohback")
+        //name=ohback
+
+        //value를 통해 key 값얻기
+        //System.out.println(getKey(hashMap,"rios"));
+
+    }
+    //FE 영역에서 넘어온 Json 타입의 데이터를 Member라는 Model에 Binding
+    @PostMapping("/경로2/경로2")
+    public ResponseEntity test1(@RequestBody Member member, HttpServletResponse res) {
+
+    return null;
+    }
+
     @GetMapping("/api/account/check")
     public ResponseEntity check(@CookieValue(value = "token", required = false) String token) {
         Claims claims = jwtService.getClaims(token);
