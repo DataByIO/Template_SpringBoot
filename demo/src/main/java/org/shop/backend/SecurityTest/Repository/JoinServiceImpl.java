@@ -1,7 +1,9 @@
-package org.shop.backend.Member.Service;
-import org.shop.backend.Member.Model.Member;
+package org.shop.backend.SecurityTest.Repository;
+
+import org.shop.backend.SecurityTest.Entity.MemberEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 
 /*************************************************************
@@ -14,14 +16,15 @@ import java.util.HashMap;
  /*2025.03.24   KIMDONGMIN   INTIAL RELEASE
  /*************************************************************/
 
-@Service("MemberService")
-public class MemberServiceImpl implements MemberService {
+@Service("JoinService")
+public class JoinServiceImpl implements JoinService {
 
     @Autowired
-    private MemberMapper memberMapper;
+    private JoinMapper joinMapper;
 
     @Override
-    public HashMap<String, Object> userInfo(Member member) throws Exception {
-        return memberMapper.userInfo(member);
+    public HashMap<String, Object> memberInfo(MemberEntity memberEntity) throws Exception {
+        return joinMapper.memberInfo(memberEntity);
     }
+
 }

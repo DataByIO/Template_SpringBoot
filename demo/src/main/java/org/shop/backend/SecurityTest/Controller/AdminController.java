@@ -1,4 +1,4 @@
-package org.shop.backend.controller;
+package org.shop.backend.SecurityTest.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
