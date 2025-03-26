@@ -69,6 +69,6 @@ public class JoinController {
             memberEntity.setPassword(bCryptPasswordEncoder.encode(memberEntity.getPassword()));// Password 암호화 후 데이터 교체
             joinService.insertMember(memberEntity);
         }
-
+        return new ResponseEntity<>(memberEntity.getPassword(), HttpStatus.OK);// Password 암호화 체크
     }
 }
