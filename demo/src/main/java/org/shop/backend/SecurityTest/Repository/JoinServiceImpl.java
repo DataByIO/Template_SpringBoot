@@ -2,7 +2,6 @@ package org.shop.backend.SecurityTest.Repository;
 
 import org.shop.backend.SecurityTest.Entity.MemberEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -25,7 +24,7 @@ public class JoinServiceImpl implements JoinService {
 
     @Override
     public HashMap<String, Object> memberInfo(MemberEntity memberEntity) throws Exception {
-        return joinMapper.memberInfo(memberEntity);
+        return joinMapper.memberInfo(String.valueOf(memberEntity));
     }
 
     @Override
@@ -33,4 +32,8 @@ public class JoinServiceImpl implements JoinService {
         joinMapper.insertMember(memberEntity);
     }
 
+    @Override
+    public HashMap<String, Object> findByUsername(String username) {
+        return joinMapper.findByUsername(username);
+    }
 }

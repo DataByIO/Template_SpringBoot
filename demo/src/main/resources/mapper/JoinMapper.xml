@@ -7,8 +7,14 @@
         FROM memberlist
         WHERE 1=1
         AND id = #{id}
-        AND password = #{password}
         AND username = #{username}
+    </select>
+
+    <select id="findByUsername" parameterType="String" resultType="HashMap">
+        SELECT *
+        FROM memberlist
+        WHERE 1=1
+          AND id = #{username}
     </select>
 
     <insert id="insertMember" parameterType="MemberEntity">

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
+
 /*************************************************************
  /* SYSTEM NAME      : controller
  /* PROGRAM NAME     : JoinController.class
@@ -39,30 +41,14 @@ public class JoinController {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-//    @GetMapping("/join")
-//    public ResponseEntity joinProcess(@RequestBody MemberEntity memberEntity) throws Exception {
-//        HashMap<String, Object> userInfoMap = joinService.memberInfo(memberEntity);
-//        //조회한 유저의 컬럼ID를 가져옴 (컬럼ID의 값임.)
-//        if(userInfoMap.get("id") != null && userInfoMap.get("password") != null) {
-//            //가입 회원
-//        }else {
-//            //미가입 회원
-//
-//        }
-//        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//    }
-
     @PostMapping ("/join")
     //@RequestBody
     public ResponseEntity join(MemberEntity memberEntity, HttpServletResponse res) throws Exception {
-//        MemberEntity memberEntity = new MemberEntity();
-//        memberEntity.setId("kidhsa1");
-//        memberEntity.setUsername("김동민");
-//        memberEntity.setPassword("ehdals3541*");
+        HashMap<String, Object> memberInfo = joinService.memberInfo(memberEntity);
 
-        if(joinService.memberInfo(memberEntity)!= null) {// 회원 정보가 있는지 체크
+        if(memberInfo!= null) {// 회원 정보가 있는지 체크
             //가입 회원
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(memberEntity, HttpStatus.OK);// Password 암호화 체크
         }else {
             //유저 정보가 비어있음 -> 미가입 회원
             //유저 정보를 insert 할 필요가 있음,
