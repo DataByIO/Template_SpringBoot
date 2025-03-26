@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.shop.backend.SecurityTest.Repository">
+<mapper namespace="org.shop.backend.SecurityTest.Repository.JoinMapper">
     <select id="memberInfo" parameterType="MemberEntity" resultType="HashMap">
         SELECT *
-        FROM memberslist
+        FROM memberlist
         WHERE 1=1
-        AND email = #{email}
+        AND id = #{id}
         AND password = #{password}
+        AND username = #{username}
     </select>
 
-    <insert id="insertMember" parameterType="MemberEntity" resultType="HashMap">
-        insert into member
+    <insert id="insertMember" parameterType="MemberEntity">
+        insert into memberlist
         (
             id,
             username,
+            email,
             password,
             is_admin,
             phone_number,
@@ -31,6 +33,7 @@
         values (
                    #{id},
                    '테스트',
+                   'kidhsa@nate.com',
                    #{password},
                    'N',
                    '010-1111-1111',
@@ -38,7 +41,7 @@
                    '서울특별시 강북구',
                    'Y',
                    '1997-11-07',
-                   '',
+                   null,
                    0,
                    SYSDATE(),
                    SYSDATE(),

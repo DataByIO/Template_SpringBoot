@@ -15,4 +15,5 @@ import java.util.HashMap;
 
 public interface JoinService {
     public HashMap<String, Object> memberInfo(MemberEntity memberEntity) throws Exception;
+    public void insertMember(MemberEntity memberEntity) throws Exception;
 }
