@@ -1,19 +1,15 @@
-package org.shop.backend.SecurityTest.Controller;
+package org.shop.backend.SecurityService.Controller;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.shop.backend.Member.Model.Member;
-import org.shop.backend.SecurityTest.Entity.MemberEntity;
-import org.shop.backend.SecurityTest.Repository.JoinService;
+import org.shop.backend.SecurityService.Model.MemberEntity;
+import org.shop.backend.SecurityService.Repository.JoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 

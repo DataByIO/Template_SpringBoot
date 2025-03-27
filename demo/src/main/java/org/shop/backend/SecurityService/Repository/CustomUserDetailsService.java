@@ -1,12 +1,9 @@
-package org.shop.backend.SecurityTest.Repository;
+package org.shop.backend.SecurityService.Repository;
 
-import lombok.SneakyThrows;
-import org.shop.backend.SecurityTest.Entity.MemberEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.HashMap;
 
@@ -24,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         //DB에서 조회
         HashMap<String, Object> userData = joinService.findByUsername(username);
-        return new CustomUserDetails(userData);
+        return new CustomUserDetailsServiceImpl(userData);
 
     }
 }

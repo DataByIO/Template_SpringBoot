@@ -6,8 +6,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.shop.backend.Member.Model.Member;
 
 import org.shop.backend.Member.Service.MemberService;
-import org.shop.backend.SecurityService.JwtService;
-import org.shop.backend.SecurityService.JwtServiceImpl;
+import org.shop.backend.SecurityService.Repository.JwtService;
+import org.shop.backend.SecurityService.Repository.JwtServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

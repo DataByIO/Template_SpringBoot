@@ -1,8 +1,8 @@
-package org.shop.backend.SecurityTest.Repository;
+package org.shop.backend.SecurityService.Repository;
 
 
 import org.apache.ibatis.annotations.Mapper;
-import org.shop.backend.SecurityTest.Entity.MemberEntity;
+import org.shop.backend.SecurityService.Model.MemberEntity;
 
 import java.util.HashMap;
 

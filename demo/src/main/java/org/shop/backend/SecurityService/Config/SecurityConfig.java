@@ -1,7 +1,6 @@
-package org.shop.backend.SecurityTest.Config;
+package org.shop.backend.SecurityService.Config;
 
 import org.shop.backend.SecurityService.LoginFilter;
-import org.shop.backend.SecurityTest.Entity.MemberEntity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

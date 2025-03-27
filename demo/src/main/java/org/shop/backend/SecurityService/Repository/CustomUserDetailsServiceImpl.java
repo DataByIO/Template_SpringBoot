@@ -1,6 +1,5 @@
-package org.shop.backend.SecurityTest.Repository;
+package org.shop.backend.SecurityService.Repository;
 
-import org.shop.backend.SecurityTest.Entity.MemberEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetailsServiceImpl implements UserDetails {
 
     private final HashMap<String, Object> memberEntity;
 
-    public CustomUserDetails(HashMap<String, Object> memberEntity) {
+    public CustomUserDetailsServiceImpl(HashMap<String, Object> memberEntity) {
         this.memberEntity = memberEntity;
     }
 

@@ -1,4 +1,4 @@
-package org.shop.backend.SecurityService;
+package org.shop.backend.SecurityService.Repository;
 
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;

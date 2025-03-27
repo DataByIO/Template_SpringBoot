@@ -1,4 +1,4 @@
-package org.shop.backend.SecurityTest.Entity;
+package org.shop.backend.SecurityService.Model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

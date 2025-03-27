@@ -1,5 +1,5 @@
-package org.shop.backend.SecurityTest.Repository;
-import org.shop.backend.SecurityTest.Entity.MemberEntity;
+package org.shop.backend.SecurityService.Repository;
+import org.shop.backend.SecurityService.Model.MemberEntity;
 
 import java.util.HashMap;
 
