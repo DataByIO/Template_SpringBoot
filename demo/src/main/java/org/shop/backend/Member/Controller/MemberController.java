@@ -40,14 +40,14 @@ public class MemberController {
         HashMap<String, Object> userInfoMap = memberService.userInfo(member);
         //조회한 유저의 컬럼ID를 가져옴 (컬럼ID의 값임.)
         if(userInfoMap.get("id") != null) {
-//            JwtService jwtService = new JwtServiceImpl();
-//            int id = (int) userInfoMap.get("id");
-//            String token = jwtService.getToken("id", id);// ID값이 있을때 Token을 생성함
-//            Cookie cookie = new Cookie("token", token);
-//            cookie.setHttpOnly(true);
-//            cookie.setPath("/");
-//
-//            res.addCookie(cookie);
+            JwtService jwtService = new JwtServiceImpl();
+            int id = (int) userInfoMap.get("id");
+            String token = jwtService.getToken("id", id);// ID값이 있을때 Token을 생성함
+            Cookie cookie = new Cookie("token", token);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+
+            res.addCookie(cookie);
 
             return new ResponseEntity<>(id, HttpStatus.OK);
         }
