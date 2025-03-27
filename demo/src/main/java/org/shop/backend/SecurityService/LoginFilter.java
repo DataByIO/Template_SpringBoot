@@ -1,15 +1,19 @@
 package org.shop.backend.SecurityService;
 
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.shop.backend.SecurityService.Repository.JwtService;
+import org.shop.backend.SecurityService.Repository.JwtServiceImpl;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -40,9 +44,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //로그인 성공시 실행하는 메소드 (여기서 JWT를 발급하면 됨)
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+    protected void successfulAuthentication(@RequestBody HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
         System.out.println("success");
-
     }
 
     //로그인 실패시 실행하는 메소드
