@@ -26,7 +26,7 @@ import java.util.Iterator;
 @ResponseBody
 public class MainController {
 
-    @GetMapping("/check")
+    @GetMapping("/")
     public String mainP() {
         //Session에 대한 사용자 이름을 확인 할 수 있는 영역
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
