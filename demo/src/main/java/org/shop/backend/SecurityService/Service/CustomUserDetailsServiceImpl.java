@@ -25,7 +25,7 @@ public class CustomUserDetailsServiceImpl implements UserDetails {
             @Override
             public String getAuthority() {
 
-                return memberEntity.get("authority").toString();
+                return memberEntity.get("role").toString();
             }
         });
 

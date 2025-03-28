@@ -22,43 +22,49 @@ public class SecurityConfig {
     private final JWTUtil jwtUtil;
 
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
+
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+
         return configuration.getAuthenticationManager();
     }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.csrf((auth) -> auth.disable());
 
-        //From 로그인 방식 disable
-        http.formLogin((auth) -> auth.disable());
+        http
+                .csrf((auth) -> auth.disable());
 
-        //http basic 인증 방식 disable
-        http.httpBasic((auth) -> auth.disable());
+        http
+                .formLogin((auth) -> auth.disable());
 
-        //경로별 인가 작업
-        http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join","/error", "/api/*/*", "/api/*", "/main").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
+        http
+                .httpBasic((auth) -> auth.disable());
+
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/login", "/", "/join").permitAll()
                         .anyRequest().authenticated());
 
-        http.addFilterAt(new LoginFilter(jwtUtil, authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+        //AuthenticationManager()와 JWTUtil 인수 전달
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-        //세션 설정
-        http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http
+                .sessionManagement((session) -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
-
 }

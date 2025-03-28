@@ -17,12 +17,13 @@ import java.util.Iterator;
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //JWTUtil 주입
-    private final JWTUtil jwtUtil;
-    private final AuthenticationManager authenticationManager;
 
-    public LoginFilter(JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
-        this.jwtUtil = jwtUtil;
+    private final AuthenticationManager authenticationManager;
+    private final JWTUtil jwtUtil;
+
+    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
