@@ -2,7 +2,7 @@ package org.shop.backend.SecurityService.Controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.shop.backend.SecurityService.Model.MemberEntity;
-import org.shop.backend.SecurityService.Repository.JoinService;
+import org.shop.backend.SecurityService.Service.JoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

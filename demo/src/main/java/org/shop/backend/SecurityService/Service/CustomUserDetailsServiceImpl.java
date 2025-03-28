@@ -1,4 +1,4 @@
-package org.shop.backend.SecurityService.Repository;
+package org.shop.backend.SecurityService.Service;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

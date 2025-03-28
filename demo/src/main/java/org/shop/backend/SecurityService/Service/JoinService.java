@@ -1,4 +1,4 @@
-package org.shop.backend.SecurityService.Repository;
+package org.shop.backend.SecurityService.Service;
 import org.shop.backend.SecurityService.Model.MemberEntity;
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package org.shop.backend.SecurityService.Repository;
+package org.shop.backend.SecurityService.Service;
 
 
 import org.apache.ibatis.annotations.Mapper;

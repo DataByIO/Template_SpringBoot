@@ -6,8 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.shop.backend.Member.Model.Member;
 
 import org.shop.backend.Member.Service.MemberService;
-import org.shop.backend.SecurityService.Repository.JwtService;
-import org.shop.backend.SecurityService.Repository.JwtServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,30 +29,27 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    JwtService jwtService;
-
     //유저 정보 불러오기
-    @PostMapping("/api/account/login")
-    public ResponseEntity login(@RequestBody Member member, HttpServletResponse res) throws Exception {
-        HashMap<String, Object> userInfoMap = memberService.userInfo(member);
-        //조회한 유저의 컬럼ID를 가져옴 (컬럼ID의 값임.)
-        if(userInfoMap.get("id") != null) {
-            JwtService jwtService = new JwtServiceImpl();
-            int id = (int) userInfoMap.get("id");
-            String token = jwtService.getToken("id", id);// ID값이 있을때 Token을 생성함
-            Cookie cookie = new Cookie("token", token);
-            cookie.setHttpOnly(true);
-            cookie.setPath("/");
-
-            res.addCookie(cookie);
-
-            return new ResponseEntity<>(id, HttpStatus.OK);
-        }
-
-
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
+//    @PostMapping("/api/account/login")
+//    public ResponseEntity login(@RequestBody Member member, HttpServletResponse res) throws Exception {
+//        HashMap<String, Object> userInfoMap = memberService.userInfo(member);
+//        //조회한 유저의 컬럼ID를 가져옴 (컬럼ID의 값임.)
+//        if(userInfoMap.get("id") != null) {
+//            JwtService jwtService = new JwtServiceImpl();
+//            int id = (int) userInfoMap.get("id");
+//            String token = jwtService.getToken("id", id);// ID값이 있을때 Token을 생성함
+//            Cookie cookie = new Cookie("token", token);
+//            cookie.setHttpOnly(true);
+//            cookie.setPath("/");
+//
+//            res.addCookie(cookie);
+//
+//            return new ResponseEntity<>(id, HttpStatus.OK);
+//        }
+//
+//
+//        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+//    }
 
     //요청 데이터를 String Object 형식으로 받아옴: Key Value
     @PostMapping("/경로/경로")
@@ -79,15 +74,15 @@ public class MemberController {
 
     return null;
     }
-
-    @GetMapping("/api/account/check")
-    public ResponseEntity check(@CookieValue(value = "token", required = false) String token) {
-        Claims claims = jwtService.getClaims(token);
-
-        if (claims != null) {
-            int id = Integer.parseInt(claims.get("id").toString());
-            return new ResponseEntity<>(id, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }
+//
+//    @GetMapping("/api/account/check")
+//    public ResponseEntity check(@CookieValue(value = "token", required = false) String token) {
+//        Claims claims = jwtService.getClaims(token);
+//
+//        if (claims != null) {
+//            int id = Integer.parseInt(claims.get("id").toString());
+//            return new ResponseEntity<>(id, HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(null, HttpStatus.OK);
+//    }
 }
