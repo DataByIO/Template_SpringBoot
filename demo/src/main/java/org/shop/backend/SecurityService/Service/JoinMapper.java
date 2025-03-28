@@ -10,5 +10,5 @@ import java.util.HashMap;
 public interface JoinMapper {
     public HashMap<String, Object> memberInfo(String memberEntity) throws Exception;
     public void insertMember(MemberEntity memberEntity) throws Exception;
-    public HashMap<String, Object> findByUsername(String memberEntity);
+    public MemberEntity findByUsername(String memberEntity);
 }

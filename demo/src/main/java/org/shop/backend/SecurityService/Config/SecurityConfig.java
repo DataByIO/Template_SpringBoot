@@ -1,5 +1,6 @@
 package org.shop.backend.SecurityService.Config;
 
+import org.shop.backend.SecurityService.Service.JWTFilter;
 import org.shop.backend.SecurityService.Service.JWTUtil;
 import org.shop.backend.SecurityService.Service.LoginFilter;
 import org.springframework.context.annotation.Bean;
@@ -54,8 +55,11 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join").permitAll()
-                        .anyRequest().authenticated());
+                        .requestMatchers("/login", "/", "/join", "/check").permitAll()
+                        .requestMatchers("/admin").hasRole("ADMIN"));
+
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
         //AuthenticationManager()와 JWTUtil 인수 전달
         http

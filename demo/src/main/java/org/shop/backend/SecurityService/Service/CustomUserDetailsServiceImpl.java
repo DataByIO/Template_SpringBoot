@@ -1,5 +1,6 @@
 package org.shop.backend.SecurityService.Service;
 
+import org.shop.backend.SecurityService.Model.MemberEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,9 +10,9 @@ import java.util.HashMap;
 
 public class CustomUserDetailsServiceImpl implements UserDetails {
 
-    private final HashMap<String, Object> memberEntity;
+    private final MemberEntity memberEntity;
 
-    public CustomUserDetailsServiceImpl(HashMap<String, Object> memberEntity) {
+    public CustomUserDetailsServiceImpl(MemberEntity memberEntity) {
         this.memberEntity = memberEntity;
     }
 
@@ -24,8 +25,9 @@ public class CustomUserDetailsServiceImpl implements UserDetails {
 
             @Override
             public String getAuthority() {
-
-                return memberEntity.get("role").toString();
+                //return memberEntity.get("role").toString();
+                System.out.println("getRole :::" + memberEntity.getRole());
+                return memberEntity.getRole();
             }
         });
 
@@ -34,12 +36,12 @@ public class CustomUserDetailsServiceImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return memberEntity.get("password").toString();
+        return memberEntity.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return memberEntity.get("username").toString();
+        return memberEntity.getUsername();
     }
 
     @Override

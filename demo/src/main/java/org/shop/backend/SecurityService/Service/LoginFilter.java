@@ -57,11 +57,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         GrantedAuthority auth = iterator.next();
 
         String role = auth.getAuthority();
-
         String token = jwtUtil.createJwt(username, role, 60*60*10L);
-
         response.addHeader("Authorization", "Bearer " + token);
-
     }
 
     //로그인 실패시 실행하는 메소드

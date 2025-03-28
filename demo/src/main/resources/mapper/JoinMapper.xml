@@ -10,7 +10,7 @@
         AND username = #{username}
     </select>
 
-    <select id="findByUsername" parameterType="String" resultType="HashMap">
+    <select id="findByUsername" parameterType="String" resultType="MemberEntity">
         SELECT *
         FROM memberlist
         WHERE 1=1

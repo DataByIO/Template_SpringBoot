@@ -26,7 +26,7 @@ public class MemberEntity {
     private String username;
     private String email;
     private String password;
-    private String is_admin;
+    private String role;
     private String phone_number;
     private String gender;
     private String address;

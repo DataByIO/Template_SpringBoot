@@ -33,7 +33,7 @@ public class JoinServiceImpl implements JoinService {
     }
 
     @Override
-    public HashMap<String, Object> findByUsername(String username) {
+    public MemberEntity findByUsername(String username) {
         return joinMapper.findByUsername(username);
     }
 }
