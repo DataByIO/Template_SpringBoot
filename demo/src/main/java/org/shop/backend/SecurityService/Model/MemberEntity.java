@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /*************************************************************
  /* SYSTEM NAME      : Model
- /* PROGRAM NAME     : Member.class
+ /* PROGRAM NAME     : MemberEntity.class
  /* DESCRIPTION      : https://sddev.tistory.com/225(어노테이션 역할별 설명)
  /* MODIFIVATION LOG :
  /* DATA         AUTHOR          DESC.
