@@ -23,17 +23,14 @@ public class JWTUtil {
     }
 
     public String getUsername(String token) {
-
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("username", String.class);
     }
 
     public String getRole(String token) {
-
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("role", String.class);
     }
 
     public Boolean isExpired(String token) {
-
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getExpiration().before(new Date());
     }
 
