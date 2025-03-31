@@ -47,17 +47,23 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //로그인 성공시 실행하는 메소드 (여기서 JWT를 발급하면 됨)
     @Override
     protected void successfulAuthentication(@RequestBody HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+        
         System.out.println("success");
         CustomUserDetailsServiceImpl customUserDetailsService = (CustomUserDetailsServiceImpl) authentication.getPrincipal();
-
+        
+        //
         String username = customUserDetailsService.getUsername();
-        System.out.println("UserName(ID) ::: " + username);
+
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
 
         String role = auth.getAuthority();
-        String token = jwtUtil.createJwt(username, role, 60*60*10L);
+        String token = jwtUtil.createJwt(username, role, 60*60*100L);
+
+        System.out.println("UserName(ID) ::: " + username);
+        System.out.println("role(role) ::: " + role);
+        System.out.println("token(token) ::: " + token);
         response.addHeader("Authorization", "Bearer " + token);
     }
 

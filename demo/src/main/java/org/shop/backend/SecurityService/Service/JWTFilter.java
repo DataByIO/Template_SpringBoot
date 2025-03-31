@@ -65,13 +65,14 @@ public class JWTFilter extends OncePerRequestFilter {
         CustomUserDetailsServiceImpl customUserDetails = new CustomUserDetailsServiceImpl(memberEntity);
 
         //스프링 시큐리티 인증 토큰 생성
-
-        System.out.println(" customUserDetails.getAuthorities() ::: " +  customUserDetails.getAuthorities());
+        System.out.println(" customUserDetails.getAuthorities() ::: " +  customUserDetails.getAuthorities().toString());
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
         //세션에 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);
-        response.sendRedirect("/");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("authentication.getName(); :::" + authentication.getName());
+
         filterChain.doFilter(request, response);
     }
 }
