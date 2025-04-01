@@ -61,7 +61,7 @@ public class SecurityConfig {
         http.formLogin((auth) -> auth.disable());
         http.httpBasic((auth) -> auth.disable());
         http.authorizeHttpRequests((auth) -> auth
-            .requestMatchers("/login", "/", "/join", "/check", "/api/*", "/api/items/*", "/api/account/*").permitAll()
+            .requestMatchers("/login", "/", "/join", "/check", "/api/*", "/api/items/*", "/api/account/*","/reissue").permitAll()
             .requestMatchers("/admin").hasRole("ADMIN"));
         //토근을 검증하기 위한 Filter를 설정한다.
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);

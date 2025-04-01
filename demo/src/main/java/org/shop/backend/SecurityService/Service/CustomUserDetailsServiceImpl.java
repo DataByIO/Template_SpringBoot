@@ -13,7 +13,7 @@ public class CustomUserDetailsServiceImpl implements UserDetails {
     private final MemberEntity memberEntity;
 
     public CustomUserDetailsServiceImpl(MemberEntity memberEntity) {
-        this.memberEntity = memberEntity;
+         this.memberEntity = memberEntity;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class CustomUserDetailsServiceImpl implements UserDetails {
             }
         });
 
-        return collection;
+         return collection;
     }
 
     @Override

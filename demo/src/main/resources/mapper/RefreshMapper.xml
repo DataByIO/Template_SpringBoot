@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.shop.backend.SecurityService.Service.JoinMapper">
+
+    <select id="existsByRefresh" parameterType="String" resultType="boolean">
+        SELECT *
+        FROM 테이블생성필요
+        WHERE 1=1
+          AND refresh = #{refresh}
+    </select>
+
+    <insert id="insertByRefresh" parameterType="RefreshEntity">
+        insert into 테이블생성필요
+        (
+            id,
+            username,
+            refreshtoken,
+            expiration
+        )
+        values (
+                   #{id},
+                   '테스트',
+                   'kidhsa@nate.com',
+                   #{password},
+                   'N',
+                   '010-1111-1111',
+                   'M',
+                   '서울특별시 강북구',
+                   'Y',
+                   '1997-11-07',
+                   null,
+                   0,
+                   SYSDATE(),
+                   SYSDATE(),
+                   SYSDATE()
+               );
+    </insert>
+
+</mapper>
