@@ -1,4 +1,4 @@
-package org.shop.backend.SecurityService.Service;
+package org.shop.backend.SecurityService.Etc;
 
 import org.shop.backend.SecurityService.Model.MemberEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 public class CustomUserDetailsServiceImpl implements UserDetails {
 

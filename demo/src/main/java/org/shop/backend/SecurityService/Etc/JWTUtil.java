@@ -1,4 +1,4 @@
-package org.shop.backend.SecurityService.Service;
+package org.shop.backend.SecurityService.Etc;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

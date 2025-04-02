@@ -1,13 +1,11 @@
-package org.shop.backend.SecurityService.Service;
+package org.shop.backend.SecurityService.Etc;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.shop.backend.SecurityService.Model.MemberEntity;
 import org.shop.backend.SecurityService.Model.RefreshEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.shop.backend.SecurityService.Service.RefreshService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 
 /*************************************************************

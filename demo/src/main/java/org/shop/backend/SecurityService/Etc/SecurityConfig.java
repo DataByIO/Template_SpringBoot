@@ -1,8 +1,5 @@
-package org.shop.backend.SecurityService.Config;
+package org.shop.backend.SecurityService.Etc;
 
-import org.shop.backend.SecurityService.Service.JWTFilter;
-import org.shop.backend.SecurityService.Service.JWTUtil;
-import org.shop.backend.SecurityService.Service.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

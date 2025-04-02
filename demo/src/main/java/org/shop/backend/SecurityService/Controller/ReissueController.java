@@ -5,7 +5,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.shop.backend.SecurityService.Model.RefreshEntity;
-import org.shop.backend.SecurityService.Service.JWTUtil;
+import org.shop.backend.SecurityService.Etc.JWTUtil;
 import org.shop.backend.SecurityService.Service.RefreshService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
