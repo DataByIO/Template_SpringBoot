@@ -43,6 +43,9 @@ public class CustomUserDetailsServiceImpl implements UserDetails {
         return memberEntity.getUsername();
     }
 
+
+    public String getId() { return memberEntity.getId(); }
+
     @Override
     public boolean isAccountNonExpired() {
 

@@ -4,8 +4,11 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.hibernate.annotations.Filter;
 import org.shop.backend.SecurityService.Model.RefreshEntity;
 import org.shop.backend.SecurityService.Service.RefreshService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Collection;
 import java.util.Date;
@@ -50,15 +54,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //JWTUtil 주입
     private final JWTUtil jwtUtil;
 
-    private RefreshService refreshService;
+    private final RefreshService refreshService;
 
     //LoginFilter는 생성자에서 authenticationManager와 jwtUtil을 주입받습니다.
     //이를 통해 인증 관리와 JWT 생성 기능을 사용할 수 있게 됩니다.
-    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, RefreshService refreshService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.refreshService = refreshService;
     }
-
 
     @Override
     public Authentication attemptAuthentication(@RequestBody HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -76,7 +80,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         return authenticationManager.authenticate(authToken);
     }
 
-
     //JWT를 발급함
     //로그인 성공 시 실행되는 메서드로, 로그인 인증을 통과한 사용자의 정보를 가져옵니다.
     @Override
@@ -86,6 +89,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         CustomUserDetailsServiceImpl customUserDetailsService = (CustomUserDetailsServiceImpl) authentication.getPrincipal();
 
         String username = customUserDetailsService.getUsername();
+        String id = customUserDetailsService.getId();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -93,12 +97,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String role = auth.getAuthority();
 
         //사용자의 username과 role(권한)을 추출하고, jwtUtil.createJwt()를 사용하여 JWT 토큰을 생성합니다.
-        String access = jwtUtil.createJwt("access", username, role, 600000L);
-        String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+        String access = jwtUtil.createJwt("access", id, username, role, 600000L);
+        String refresh = jwtUtil.createJwt("refresh", id, username, role, 86400000L);
 
         //토큰 최초 발급시 최초 발급 refreshToken을 DB에 Insert
         Date date = new Date(System.currentTimeMillis() + 86400000L);
         RefreshEntity refreshEntity  = new RefreshEntity();
+        refreshEntity.setId(id);
         refreshEntity.setUsername(username);
         refreshEntity.setRefresh(refresh);
         refreshEntity.setExpiration(date.toString());

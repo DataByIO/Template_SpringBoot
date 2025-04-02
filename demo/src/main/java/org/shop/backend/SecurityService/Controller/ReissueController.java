@@ -23,11 +23,8 @@ public class ReissueController {
     @Autowired
     private RefreshService refreshService;
 
-    private final JWTUtil jwtUtil;
-
-    public ReissueController(JWTUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
+    @Autowired
+    private JWTUtil jwtUtil;
 
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
@@ -74,16 +71,18 @@ public class ReissueController {
 
         String username = jwtUtil.getUsername(refresh);
         String role = jwtUtil.getRole(refresh);
+        String id = jwtUtil.getId(refresh);
         
         //make new JWT -> 새로운 AccessCode를 발번해줌
-        String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
-        String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+        String newAccess = jwtUtil.createJwt("access", id, username, role, 600000L);
+        String newRefresh = jwtUtil.createJwt("refresh", id, username, role, 86400000L);
         //response
 
-        //Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
+        //새로 로그인을 시도 Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
         refreshService.deleteByRefresh(refresh);
         Date date = new Date(System.currentTimeMillis() + 86400000L);
         RefreshEntity refreshEntity  = new RefreshEntity();
+        String userid = refreshEntity.getId();
         refreshEntity.setUsername(username);
         refreshEntity.setRefresh(newRefresh);
         refreshEntity.setExpiration(date.toString());

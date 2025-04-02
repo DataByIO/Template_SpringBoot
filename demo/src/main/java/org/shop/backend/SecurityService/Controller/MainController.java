@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Collection;
@@ -26,8 +27,9 @@ import java.util.Iterator;
 @ResponseBody
 public class MainController {
 
-    @GetMapping("/")
+    @PostMapping("/main")
     public String mainP() {
+
         //Session에 대한 사용자 이름을 확인 할 수 있는 영역
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 

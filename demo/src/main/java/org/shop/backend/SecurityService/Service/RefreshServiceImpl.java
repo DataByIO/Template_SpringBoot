@@ -13,16 +13,16 @@ public class RefreshServiceImpl implements RefreshService {
     private RefreshMapper refreshMapper;
 
     @Override
-    public Boolean existsByRefresh(String refresh) {
-        return refreshMapper.existsByRefresh(refresh);
-    }
-
-    @Override
     public void insertByRefresh(RefreshEntity refreshEntity){
         refreshMapper.insertByRefresh(refreshEntity);
     }
 
     public void deleteByRefresh(String refresh) {
         refreshMapper.deleteByRefresh(refresh);
+    }
+
+    @Override
+    public Boolean existsByRefresh(String refresh) {
+        return refreshMapper.existsByRefresh(refresh);
     }
 }
