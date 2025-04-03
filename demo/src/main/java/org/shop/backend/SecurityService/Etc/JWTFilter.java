@@ -3,6 +3,7 @@ package org.shop.backend.SecurityService.Etc;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.shop.backend.SecurityService.Model.MemberEntity;
@@ -47,10 +48,27 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         //header에 access라는 명칭으로 토큰을 넣었고 해당 토큰을 가지고 옴
-        String accessToken = request.getHeader("access");
+        //String accessToken = request.getHeader("access");
+
+        //get refresh token
+
+        String accessToken = null;
+        try {
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("access")) {
+                    accessToken = cookie.getValue();
+                }
+            }
+        }catch (NullPointerException e) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         //access 헤더 검증
         //다음 필터로 넘김합니다 (filterChain.doFilter(request, response)).
+
         if (accessToken == null) {
             System.out.println("AccessToken NULL :::" + accessToken);
             filterChain.doFilter(request, response);
@@ -70,7 +88,7 @@ public class JWTFilter extends OncePerRequestFilter {
             writer.print("access token expired");
 
             //response status code
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 토큰이 만료될 경우 프론트영역에 어떤 상태코드를 반환할지
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 토큰이 만료될 경우 프론트영역에 어떤 상태코드를 반환할지
             return;
         }
 
