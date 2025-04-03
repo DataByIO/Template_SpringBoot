@@ -149,13 +149,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String category = jwtUtil.getCategory(accessToken);
 
         if (!category.equals("access")) {
-
             //response body
-            PrintWriter writer = response.getWriter();
-            writer.print("invalid access token");
-
-            //response status code
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
