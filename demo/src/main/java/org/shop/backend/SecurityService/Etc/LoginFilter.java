@@ -97,8 +97,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String role = auth.getAuthority();
 
         //사용자의 username과 role(권한)을 추출하고, jwtUtil.createJwt()를 사용하여 JWT 토큰을 생성합니다.
-        String access = jwtUtil.createJwt("access", id, username, role, 600000L);
-        String refresh = jwtUtil.createJwt("refresh", id, username, role, 86400000L);
+        String access = jwtUtil.createJwt("access", id, username, role, 600000L); // 10분
+        String refresh = jwtUtil.createJwt("refresh", id, username, role, 86400000L); // 24시간
 
         //토큰 최초 발급시 최초 발급 refreshToken을 DB에 Insert
         Date date = new Date(System.currentTimeMillis() + 86400000L);
@@ -113,6 +113,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //응답 설정
         response.addHeader("access", access);
+        response.addCookie(createCookie("access", access));
         response.addCookie(createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
     }

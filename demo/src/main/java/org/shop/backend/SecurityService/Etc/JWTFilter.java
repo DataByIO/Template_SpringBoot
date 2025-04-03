@@ -3,9 +3,14 @@ package org.shop.backend.SecurityService.Etc;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.shop.backend.SecurityService.Model.MemberEntity;
+import org.shop.backend.SecurityService.Model.RefreshEntity;
+import org.shop.backend.SecurityService.Service.RefreshService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 /*************************************************************
  /* SYSTEM NAME      : SecurityService/Service
@@ -39,18 +45,39 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
 
-    public JWTFilter(JWTUtil jwtUtil) {
+    private final RefreshService refreshService;
+
+    public JWTFilter(JWTUtil jwtUtil, RefreshService refreshService) {
         this.jwtUtil = jwtUtil;
+        this.refreshService = refreshService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         //header에 access라는 명칭으로 토큰을 넣었고 해당 토큰을 가지고 옴
-        String accessToken = request.getHeader("access");
+        //String accessToken = request.getHeader("access");
+
+        //get refresh token
+        String accessToken = null;
+        String refreshToken = null;
+        try {
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("access")) {
+                    accessToken = cookie.getValue();
+                }else if (cookie.getName().equals("refresh")) {
+                    refreshToken = cookie.getValue();
+                }
+            }
+        }catch (NullPointerException e) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         //access 헤더 검증
         //다음 필터로 넘김합니다 (filterChain.doFilter(request, response)).
+
         if (accessToken == null) {
             System.out.println("AccessToken NULL :::" + accessToken);
             filterChain.doFilter(request, response);
@@ -64,14 +91,58 @@ public class JWTFilter extends OncePerRequestFilter {
         try {
             jwtUtil.isExpired(accessToken);
         } catch (ExpiredJwtException e) {
+            //accessToken 만료->refreshToken이 존재하고 refreshToken이 만료가 아닌경우
+            if (refreshToken == null) {
+                //response status code
+                //조건이 해당되면 메소드 종료 (필수)
+                return;
+            }
+            //expired check
+            try {
+                jwtUtil.isExpired(refreshToken);
+                // refrashToken이 만료가 아닌경우
+                String category = jwtUtil.getCategory(refreshToken);
 
-            //response body
-            PrintWriter writer = response.getWriter();
-            writer.print("access token expired");
+                if (!category.equals("refresh")) {
+                    //response status code
+                    return; // 토큰이 만료될 경우 프론트영역에 어떤 상태코드를 반환할지
+                }
 
-            //response status code
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 토큰이 만료될 경우 프론트영역에 어떤 상태코드를 반환할지
+                //DB에 refreshToken이 저장되어 있는지 확인
+                Boolean isExist = refreshService.existsByRefresh(refreshToken);
+                if (!isExist) {
+                    //response body
+                    //response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 토큰이 만료될 경우 프론트영역에 어떤 상태코드를 반환할지
+                    return;
+                }
+
+                String username = jwtUtil.getUsername(refreshToken);
+                String role = jwtUtil.getRole(refreshToken);
+                String id = jwtUtil.getId(refreshToken);
+
+                //make new JWT -> 새로운 AccessCode를 발번해줌
+                String newAccess = jwtUtil.createJwt("access", id, username, role, 600000L);
+                String newRefresh = jwtUtil.createJwt("refresh", id, username, role, 86400000L);
+                //response
+
+                //새로 로그인을 시도 Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
+                refreshService.deleteByRefresh(refreshToken);
+                Date date = new Date(System.currentTimeMillis() + 86400000L);
+                RefreshEntity refreshEntity  = new RefreshEntity();
+                refreshEntity.setId(id);
+                refreshEntity.setUsername(username);
+                refreshEntity.setRefresh(newRefresh);
+                refreshEntity.setExpiration(date.toString());
+                refreshService.insertByRefresh(refreshEntity);
+
+                response.addCookie(createCookie("access", newAccess));
+                response.addCookie(createCookie("refresh", newRefresh));
+            } catch (ExpiredJwtException e2) {
+                //response status code
+                response.sendRedirect("/loginpage");
+            }
             return;
+
         }
 
         // 토큰이 accessToken인지 확인 (발급시 페이로드에 명시)
@@ -108,5 +179,15 @@ public class JWTFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
+    }
+
+    private Cookie createCookie(String key, String value) {
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(24*60*60);
+        //cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        return cookie;
     }
 }

@@ -1,5 +1,6 @@
 package org.shop.backend.SecurityService.Etc;
 
+import org.shop.backend.SecurityService.Controller.ReissueController;
 import org.shop.backend.SecurityService.Service.RefreshService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 /*************************************************************
  /* SYSTEM NAME      : SecurityService
@@ -65,9 +67,10 @@ public class SecurityConfig {
             .requestMatchers("/login", "/", "/join", "/check", "/api/*", "/api/items/*", "/api/account/*","/reissue", "/main").permitAll()
             .requestMatchers("/admin").hasRole("ADMIN"));
         //토근을 검증하기 위한 Filter를 설정한다.
-        http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtUtil, refreshService), LoginFilter.class);
         //AuthenticationManager()와 JWTUtil 인수 전달
         http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshService), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshService), LogoutFilter.class);
         http.sessionManagement((session) -> session
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

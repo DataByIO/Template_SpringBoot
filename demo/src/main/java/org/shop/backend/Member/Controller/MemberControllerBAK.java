@@ -1,11 +1,11 @@
 package org.shop.backend.Member.Controller;
 
-import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.shop.backend.Member.Model.Member;
 
 import org.shop.backend.Member.Service.MemberService;
+import org.shop.backend.SecurityService.Etc.JWTUtil;
+import org.shop.backend.SecurityService.Model.MemberEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,37 +24,34 @@ import java.util.HashMap;
  /*************************************************************/
 
 @RestController
-public class MemberController {
+public class MemberControllerBAK {
 
-    @Autowired
-    private MemberService memberService;
-
-    //유저 정보 불러오기
+//    @Autowired
+//    private MemberService memberService;
+//
+//    @Autowired
+//    private JWTUtil jwtUtil;
+//
+//    유저 정보 불러오기
 //    @PostMapping("/api/account/login")
 //    public ResponseEntity login(@RequestBody Member member, HttpServletResponse res) throws Exception {
-//        HashMap<String, Object> userInfoMap = memberService.userInfo(member);
 //        //조회한 유저의 컬럼ID를 가져옴 (컬럼ID의 값임.)
-//        if(userInfoMap.get("id") != null) {
-//            JwtService jwtService = new JwtServiceImpl();
-//            int id = (int) userInfoMap.get("id");
-//            String token = jwtService.getToken("id", id);// ID값이 있을때 Token을 생성함
-//            Cookie cookie = new Cookie("token", token);
-//            cookie.setHttpOnly(true);
-//            cookie.setPath("/");
+//        MemberEntity memberEntity = new MemberEntity();
 //
-//            res.addCookie(cookie);
+//        String id = jwtUtil.getId(accessToken);
+//        String username = jwtUtil.getUsername(accessToken);
+//        String role = jwtUtil.getRole(accessToken);
 //
-//            return new ResponseEntity<>(id, HttpStatus.OK);
-//        }
-//
-//
-//        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+//        memberEntity.setId(id);
+//        memberEntity.setUsername(username);
+//        memberEntity.setRole(role);
+//        return new ResponseEntity<>(memberEntity,HttpStatus.OK);
 //    }
 
     //요청 데이터를 String Object 형식으로 받아옴: Key Value
-    @PostMapping("/경로/경로")
-    public void init(@RequestBody HashMap<String, Object> map) {
-        System.out.println(map);
+//    @PostMapping("/경로/경로")
+//    public void init(@RequestBody HashMap<String, Object> map) {
+//        System.out.println(map);
         //데이터를 꺼내옴
         //String name = map.get("name");
         //int age = map.get("age");
@@ -67,13 +64,13 @@ public class MemberController {
         //value를 통해 key 값얻기
         //System.out.println(getKey(hashMap,"rios"));
 
-    }
+    //}
     //FE 영역에서 넘어온 Json 타입의 데이터를 Member라는 Model에 Binding
-    @PostMapping("/경로2/경로2")
-    public ResponseEntity test1(@RequestBody Member member, HttpServletResponse res) {
-
-    return null;
-    }
+//    @PostMapping("/경로2/경로2")
+//    public ResponseEntity test1(@RequestBody Member member, HttpServletResponse res) {
+//
+//    return null;
+//    }
 //
 //    @GetMapping("/api/account/check")
 //    public ResponseEntity check(@CookieValue(value = "token", required = false) String token) {

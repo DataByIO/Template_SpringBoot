@@ -37,8 +37,8 @@ public class JWTUtil {
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get("category", String.class);
     }
 
-    public Boolean isExpired(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getExpiration().before(new Date());
+    public void isExpired(String token) {
+        Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getExpiration();
     }
 
     public String createJwt(String category, String id,String username, String role, Long expiredMs) {
