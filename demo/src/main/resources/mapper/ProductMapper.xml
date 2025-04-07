@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.shop.backend.Product.Service.ProductMapper">
+<mapper namespace="org.project.backend.Product.Service.ProductMapper">
     <select id="itemsList" parameterType="Product" resultType="Product">
         SELECT *
         FROM items
