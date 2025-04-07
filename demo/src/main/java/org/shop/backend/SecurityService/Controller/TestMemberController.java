@@ -12,10 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
-@Controller
-@ResponseBody
+@RestController
 public class TestMemberController {
 
     @Autowired
@@ -25,6 +25,7 @@ public class TestMemberController {
     private JWTUtil jwtUtil;
 
     //유저 정보 불러오기
+    @ResponseBody
     @PostMapping("/api/account/loginCheck")
     public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String accessToken = null;
@@ -45,9 +46,10 @@ public class TestMemberController {
             memberEntity.setId(id);
             memberEntity.setUsername(username);
             memberEntity.setRole(role);
+            memberEntity.setRole(role);
 
         }catch (NullPointerException ignored) {
-
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
         return new ResponseEntity<>(memberEntity, HttpStatus.OK);
     }

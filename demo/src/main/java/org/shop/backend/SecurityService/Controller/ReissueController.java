@@ -132,8 +132,8 @@ public class ReissueController {
         private JWTUtil jwtUtil;
 
         //유저 정보 불러오기
-        @PostMapping("/api/account/login")
-        public ResponseEntity<?> login(String accessToken) throws Exception {
+        @PostMapping("/api/account/login123")
+        public ResponseEntity<?> login(String accessToken) {
 
             //조회한 유저의 컬럼ID를 가져옴 (컬럼ID의 값임.)
             MemberEntity memberEntity = new MemberEntity();
