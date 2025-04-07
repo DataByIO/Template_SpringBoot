@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
@@ -47,6 +48,8 @@ public class JWTUtil {
         claims.put("id", id);
         claims.put("username", username);
         claims.put("role", role);
+
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))

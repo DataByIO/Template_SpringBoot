@@ -27,9 +27,12 @@
     </insert>
 
     <delete id="deleteByRefresh" parameterType="String">
-
-        delete from tb_tokenhistory_h
-        where refresh = #{refresh}
+        DELETE FROM gallery.tb_tokenhistory_h
+        WHERE ID IN (
+                    SELECT ID
+                    FROM gallery.tb_tokenhistory_h
+                    WHERE 1=1
+                      AND refresh = #{refresh})
 
     </delete>
 </mapper>
