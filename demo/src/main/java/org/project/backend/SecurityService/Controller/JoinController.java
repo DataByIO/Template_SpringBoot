@@ -36,6 +36,7 @@ public class JoinController {
     public JoinController(BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
+    //귀찮다 뭐 만들지 생각좀 해야지
 
     @PostMapping ("/join")
     //@RequestBody
