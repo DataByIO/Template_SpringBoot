@@ -1,4 +1,4 @@
-package org.project.backend.Member.Controller;
+package org.project.backend.Board.Controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.project.backend.SecurityService.Model.MemberEntity;
@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.HashMap;
 
 @Controller
 @ResponseBody

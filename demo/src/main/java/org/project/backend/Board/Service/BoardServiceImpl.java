@@ -1,4 +1,4 @@
-package org.project.backend.Member.Service;
+package org.project.backend.Board.Service;
 
 import org.project.backend.SecurityService.Model.MemberEntity;
 

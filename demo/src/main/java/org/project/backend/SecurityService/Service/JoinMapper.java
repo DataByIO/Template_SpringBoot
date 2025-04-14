@@ -2,7 +2,6 @@ package org.project.backend.SecurityService.Service;
 
 
 import org.apache.ibatis.annotations.Mapper;
-import org.project.backend.Member.Model.Member;
 import org.project.backend.SecurityService.Model.MemberEntity;
 
 import java.util.HashMap;

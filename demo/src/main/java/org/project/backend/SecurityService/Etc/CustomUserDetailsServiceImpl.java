@@ -1,6 +1,5 @@
 package org.project.backend.SecurityService.Etc;
 
-import org.project.backend.Member.Model.Member;
 import org.project.backend.SecurityService.Model.MemberEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

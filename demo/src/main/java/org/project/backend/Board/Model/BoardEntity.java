@@ -1,4 +1,4 @@
-package org.project.backend.Member.Model;
+package org.project.backend.Board.Model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
