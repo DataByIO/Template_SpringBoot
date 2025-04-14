@@ -1,6 +1,5 @@
 package org.project.backend.SecurityService.Service;
 
-import org.project.backend.Board.Model.Member;
 import org.project.backend.SecurityService.Model.MemberEntity;
 
 import java.util.HashMap;
