@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class BoardEntity {
     @Id
     @GeneratedValue
-    private Long id;
+    private String id;
     private String title;
     private String content;
     private String author;
