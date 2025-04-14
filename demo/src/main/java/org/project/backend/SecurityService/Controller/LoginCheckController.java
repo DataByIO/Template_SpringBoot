@@ -13,6 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/*************************************************************
+ /* SYSTEM NAME      : controller
+ /* PROGRAM NAME     : LoginCheckController.class
+ /* DESCRIPTION      :
+ /* MODIFIVATION LOG :
+ /* DATA         AUTHOR          DESC.
+ /*--------     ---------    ----------------------
+ /*2025.03.25   KIMDONGMIN   INTIAL RELEASE
+ /*************************************************************/
 
 @RestController
 public class LoginCheckController {

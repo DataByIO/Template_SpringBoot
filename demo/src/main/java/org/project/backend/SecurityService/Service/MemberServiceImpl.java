@@ -6,6 +6,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
+/*************************************************************
+ /* SYSTEM NAME      : Service
+ /* PROGRAM NAME     : MemberServiceImpl.java
+ /* DESCRIPTION      :
+ /* MODIFIVATION LOG :
+ /* DATA         AUTHOR          DESC.
+ /*--------     ---------    ----------------------
+ /*2025.03.24   KIMDONGMIN   INTIAL RELEASE
+ /*************************************************************/
+
 @Service("MemberService")
 public class MemberServiceImpl implements MemberService {
 

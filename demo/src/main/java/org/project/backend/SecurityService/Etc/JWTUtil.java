@@ -12,6 +12,18 @@ import javax.crypto.SecretKey;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/*************************************************************
+ /* SYSTEM NAME      : SecurityService/Etc
+ /* PROGRAM NAME     : JWTUtil.java
+ /* DESCRIPTION      :
+ /* MODIFIVATION LOG :
+ /* DATA         AUTHOR          DESC.
+ /*--------     ---------    ----------------------
+ /*2025.03.24   KIMDONGMIN   INTIAL RELEASE
+ /*2025.03.31   KIMDONGMIN   흐름예시
+ /*2025.04.14   KIMDONGMIN   소스 코드 수정
+ /*************************************************************/
+
 @Component
 public class JWTUtil {
 

@@ -4,6 +4,16 @@ import org.project.backend.SecurityService.Model.RefreshEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/*************************************************************
+ /* SYSTEM NAME      : Service
+ /* PROGRAM NAME     : RefreshServiceImpl.java
+ /* DESCRIPTION      :
+ /* MODIFIVATION LOG :
+ /* DATA         AUTHOR          DESC.
+ /*--------     ---------    ----------------------
+ /*2025.03.24   KIMDONGMIN   INTIAL RELEASE
+ /*************************************************************/
+
 @Service("RefreshService")
 public class RefreshServiceImpl implements RefreshService {
 

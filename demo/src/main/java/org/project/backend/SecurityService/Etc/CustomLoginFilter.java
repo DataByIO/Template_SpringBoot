@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 /*************************************************************
- /* SYSTEM NAME      : SecurityService/Service
+ /* SYSTEM NAME      : SecurityService/Etc
  /* PROGRAM NAME     : LoginFilter.java
  /* DESCRIPTION      :
  사용자가 로그인 요청을 보냄:
@@ -43,7 +43,7 @@ import java.util.Iterator;
  /*2025.04.04   KIMDONGMIN   소스 코드 수정
  /*************************************************************/
 
-public class LoginFilter extends UsernamePasswordAuthenticationFilter {
+public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 
     //Spring Security의 인증 매니저로, 사용자 인증을 담당합니다. 로그인 시 제공된 사용자명과 비밀번호를 사용하여 인증을 시도합니다.
@@ -55,7 +55,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //LoginFilter는 생성자에서 authenticationManager와 jwtUtil을 주입받습니다.
     //이를 통해 인증 관리와 JWT 생성 기능을 사용할 수 있게 됩니다.
-    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, RefreshService refreshService) {
+    public CustomLoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, RefreshService refreshService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.refreshService = refreshService;

@@ -7,6 +7,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/*************************************************************
+ /* SYSTEM NAME      : SecurityService/Etc
+ /* PROGRAM NAME     : CustomUserDetailsServiceImpl.java
+ /* DESCRIPTION      :
+ /* MODIFIVATION LOG :
+ /* DATA         AUTHOR          DESC.
+ /*--------     ---------    ----------------------
+ /*2025.03.24   KIMDONGMIN   INTIAL RELEASE
+ /*2025.03.31   KIMDONGMIN   흐름예시
+ /*2025.04.14   KIMDONGMIN   소스 코드 수정
+ /*************************************************************/
+
 public class CustomUserDetailsServiceImpl implements UserDetails {
 
     private final MemberEntity memberEntity;

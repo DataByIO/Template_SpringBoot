@@ -13,6 +13,18 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 
+/*************************************************************
+ /* SYSTEM NAME      : SecurityService/Etc
+ /* PROGRAM NAME     : CustomLogoutFilter.java
+ /* DESCRIPTION      :
+ /* MODIFIVATION LOG :
+ /* DATA         AUTHOR          DESC.
+ /*--------     ---------    ----------------------
+ /*2025.03.24   KIMDONGMIN   INTIAL RELEASE
+ /*2025.03.31   KIMDONGMIN   흐름예시
+ /*2025.04.14   KIMDONGMIN   소스 코드 수정
+ /*************************************************************/
+
 public class CustomLogoutFilter extends GenericFilterBean {
 
     private final JWTUtil jwtUtil;

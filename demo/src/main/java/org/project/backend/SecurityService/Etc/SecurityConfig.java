@@ -65,10 +65,10 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/login", "/", "/join", "/check", "/api/*", "/api/items/*", "/api/account/*","/reissue", "/main", "/api/account/loginCheck").permitAll()
                 .requestMatchers("/admin").hasRole("ADMIN"));
-        //토근을 검증하기 위한 Filter를 설정한다.
-        http.addFilterBefore(new JWTFilter(jwtUtil, refreshService), LoginFilter.class);
+        //토큰을 검증하기 위한 Filter를 설정한다.
+        http.addFilterBefore(new JWTFilter(jwtUtil, refreshService), CustomLoginFilter.class);
         //AuthenticationManager()와 JWTUtil 인수 전달
-        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshService), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(new CustomLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshService), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshService), LogoutFilter.class);
         http.sessionManagement((session) -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

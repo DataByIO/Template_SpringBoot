@@ -9,6 +9,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/*************************************************************
+ /* SYSTEM NAME      : Controller
+ /* PROGRAM NAME     : BoardController.class
+ /* DESCRIPTION      :
+ /* MODIFIVATION LOG :
+ /* DATA         AUTHOR          DESC.
+ /*--------     ---------    ----------------------
+ /*2025.04.14   KIMDONGMIN   INTIAL RELEASE
+ /*************************************************************/
+
 @Controller
 @ResponseBody
 public class BoardController {

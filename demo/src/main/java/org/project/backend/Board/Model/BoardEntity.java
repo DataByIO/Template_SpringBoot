@@ -5,8 +5,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
+
+/*************************************************************
+ /* SYSTEM NAME      : Model
+ /* PROGRAM NAME     : BoardEntity.class
+ /* DESCRIPTION      :
+ /* MODIFIVATION LOG :
+ /* DATA         AUTHOR          DESC.
+ /*--------     ---------    ----------------------
+ /*2025.04.14   KIMDONGMIN   INTIAL RELEASE
+ /*************************************************************/
 
 @Entity
 @Getter
