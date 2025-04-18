@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.project.backend.Board.Service.BoardMapper">
+    <select id="selectBoard" parameterType="HashMap" resultType="HashMap">
+        SELECT *
+        FROM memberlist
+        WHERE 1=1
+        AND id = #{id}
+        AND username = #{username}
+    </select>
+
+    <insert id="insertBoard" parameterType="HashMap">
+        insert into memberlist
+        (
+            id,
+            username,
+            email,
+            password,
+            role,
+            phone_number,
+            gender,
+            address,
+            user_status,
+            birth_date,
+            profile_image,
+            points,
+            last_login_at,
+            created_at,
+            updated_at
+        )
+        values (
+                   #{id},
+                   '테스트',
+                   'kidhsa@nate.com',
+                   #{password},
+                   'N',
+                   '010-1111-1111',
+                   'M',
+                   '서울특별시 강북구',
+                   'Y',
+                   '1997-11-07',
+                   null,
+                   0,
+                   SYSDATE(),
+                   SYSDATE(),
+                   SYSDATE()
+               );
+    </insert>
+
+    <update id="updateBoard" parameterType="HashMap">
+        insert into memberlist
+        (
+            id,
+            username,
+            email,
+            password,
+            role,
+            phone_number,
+            gender,
+            address,
+            user_status,
+            birth_date,
+            profile_image,
+            points,
+            last_login_at,
+            created_at,
+            updated_at
+        )
+        values (
+                   #{id},
+                   '테스트',
+                   'kidhsa@nate.com',
+                   #{password},
+                   'N',
+                   '010-1111-1111',
+                   'M',
+                   '서울특별시 강북구',
+                   'Y',
+                   '1997-11-07',
+                   null,
+                   0,
+                   SYSDATE(),
+                   SYSDATE(),
+                   SYSDATE()
+               );
+    </update>
+
+    <delete id="deleteBoard" parameterType="HashMap">
+        insert into memberlist
+        (
+            id,
+            username,
+            email,
+            password,
+            role,
+            phone_number,
+            gender,
+            address,
+            user_status,
+            birth_date,
+            profile_image,
+            points,
+            last_login_at,
+            created_at,
+            updated_at
+        )
+        values (
+                   #{id},
+                   '테스트',
+                   'kidhsa@nate.com',
+                   #{password},
+                   'N',
+                   '010-1111-1111',
+                   'M',
+                   '서울특별시 강북구',
+                   'Y',
+                   '1997-11-07',
+                   null,
+                   0,
+                   SYSDATE(),
+                   SYSDATE(),
+                   SYSDATE()
+               );
+    </delete>
+
+
+
+
+</mapper>
