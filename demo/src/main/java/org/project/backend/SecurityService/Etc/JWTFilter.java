@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.project.backend.SecurityService.Model.MemberEntity;
 import org.project.backend.SecurityService.Model.RefreshEntity;
 import org.project.backend.SecurityService.Service.RefreshService;
@@ -15,7 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 /*************************************************************
  /* SYSTEM NAME      : SecurityService/Service
@@ -37,11 +40,10 @@ import java.util.Date;
  /*2025.03.31   KIMDONGMIN   흐름예시
  /*2025.04.01   KIMDONGMIN   Token 검증영역 추가
  /*************************************************************/
-
+@Slf4j
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
-
     private final RefreshService refreshService;
 
     public JWTFilter(JWTUtil jwtUtil, RefreshService refreshService) {
@@ -50,136 +52,130 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
-        //header에 access라는 명칭으로 토큰을 넣었고 해당 토큰을 가지고 옴
-        //String accessToken = request.getHeader("access");
-
-        //get refresh token
         String accessToken = null;
         String refreshToken = null;
-        try {
-            Cookie[] cookies = request.getCookies();
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("access")) {
-                    accessToken = cookie.getValue();
-                }else if (cookie.getName().equals("refresh")) {
-                    refreshToken = cookie.getValue();
+                switch (cookie.getName()) {
+                    case "access" -> accessToken = cookie.getValue();
+                    case "refresh" -> refreshToken = cookie.getValue();
                 }
             }
-        }catch (NullPointerException e) {
-            filterChain.doFilter(request, response);
-            return;
         }
 
-        //access 헤더 검증
-        //다음 필터로 넘김합니다 (filterChain.doFilter(request, response)).
-
+        // AccessToken 없으면 인증 불가 → 401 응답
         if (accessToken == null) {
-            System.out.println("AccessToken NULL :::" + accessToken);
+            log.debug("AccessToken is missing.");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Access token required.");
+            return;
+        }
+
+        // AccessToken 만료
+        if (jwtUtil.isExpired(accessToken)) {
+            log.debug("AccessToken expired.");
+            if (!handleAccessTokenExpired(refreshToken, response)) {
+                return; // Refresh 실패한 경우만 중단
+            }
+            // Refresh 성공한 경우 → 다음 필터로 넘겨야 함
             filterChain.doFilter(request, response);
-            //조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
-        //토큰 소멸 시간 검증
-        //jwtUtil.isExpired(accessToken)을 통해 토큰이 만료되었는지 확인합니다.
-        // 만약 만료된 토큰이라면 요청을 필터 체인에 넘기고, 더 이상 처리하지 않습니다.
-        try {
-            jwtUtil.isExpired(accessToken);
-        } catch (ExpiredJwtException e) {
-            //accessToken 만료->refreshToken이 존재하고 refreshToken이 만료가 아닌경우
-            if (refreshToken == null) {
-                //response status code
-                //조건이 해당되면 메소드 종료 (필수)
-                return;
-            }
-            //expired check
-            try {
-                jwtUtil.isExpired(refreshToken);
-                // refrashToken이 만료가 아닌경우
-                String category = jwtUtil.getCategory(refreshToken);
-
-                if (!category.equals("refresh")) {
-                    //response status code
-                    return; // 토큰이 만료될 경우 프론트영역에 어떤 상태코드를 반환할지
-                }
-
-                //DB에 refreshToken이 저장되어 있는지 확인
-                Boolean isExist = refreshService.existsByRefresh(refreshToken);
-                if (!isExist) {
-                    //response body
-                    //response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 토큰이 만료될 경우 프론트영역에 어떤 상태코드를 반환할지
-                    return;
-                }
-
-                String username = jwtUtil.getUsername(refreshToken);
-                String role = jwtUtil.getRole(refreshToken);
-                String id = jwtUtil.getId(refreshToken);
-
-                //make new JWT -> 새로운 AccessCode를 발번해줌
-                String newAccess = jwtUtil.createJwt("access", id, username, role, 600000L);
-                String newRefresh = jwtUtil.createJwt("refresh", id, username, role, 86400000L);
-                //response
-
-                //새로 로그인을 시도 Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
-                refreshService.deleteByRefresh(refreshToken);
-                Date date = new Date(System.currentTimeMillis() + 86400000L);
-                RefreshEntity refreshEntity  = new RefreshEntity();
-                refreshEntity.setId(id);
-                refreshEntity.setUsername(username);
-                refreshEntity.setRefresh(newRefresh);
-                refreshEntity.setExpiration(date.toString());
-                refreshService.insertByRefresh(refreshEntity);
-
-                response.addCookie(createCookie("access", newAccess));
-                response.addCookie(createCookie("refresh", newRefresh));
-            } catch (ExpiredJwtException e2) {
-                //response status code
-                response.sendRedirect("/loginpage");
-            }
-            return;
-
-        }
-
-        // 토큰이 accessToken인지 확인 (발급시 페이로드에 명시)
-        String category = jwtUtil.getCategory(accessToken);
-
-
-        if (!category.equals("access")) {
-            //response body
+        // 토큰 유형 검사
+        String category = Optional.ofNullable(jwtUtil.getCategory(accessToken)).orElse("");
+        if (!"access".equals(category)) {
+            log.debug("Invalid token category: {}", category);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid access token.");
             return;
         }
 
-        //토큰에서 username과 role 획득
-        String id = jwtUtil.getId(accessToken);
-        String username = jwtUtil.getUsername(accessToken);
-        String role = jwtUtil.getRole(accessToken);
-
-        //userEntity를 생성하여 값 set
-        MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setId(id);
-        memberEntity.setUsername(username);
-        memberEntity.setRole(role);
-        //UserDetails에 회원 정보 객체 담기
-        CustomUserDetailsServiceImpl customUserDetails = new CustomUserDetailsServiceImpl(memberEntity);
-
-        //스프링 시큐리티 인증 토큰 생성 -> UsernamePasswordAuthenticationToken은 Spring Security에서 인증을 위한 토큰 객체입니다.
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
-        //SecurityContextHolder는 Spring Security에서 인증 정보를 저장하고 관리하는 컨테이너 역할을 합니다. ->
-        //SecurityContextHolder에 인증 정보를 저장하여, 이후 Spring Security가 이 인증 정보를 사용하여 요청을 처리하도록 합니다.
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-
+        // 정상 토큰이면 인증 컨텍스트 설정 후 필터 체인 진행
+        setupAuthenticationContext(accessToken);
         filterChain.doFilter(request, response);
+    }
+
+    private boolean handleAccessTokenExpired(String refreshToken, HttpServletResponse response) throws IOException {
+        if (refreshToken == null || jwtUtil.isExpired(refreshToken)) {
+            log.debug("Refresh token is missing or expired.");
+            response.sendRedirect("/loginpage");
+            return false;
+        }
+
+        String category = Optional.ofNullable(jwtUtil.getCategory(refreshToken)).orElse("");
+        if (!"refresh".equals(category)) {
+            log.debug("Invalid refresh token category.");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid refresh token.");
+            return false;
+        }
+
+        if (!refreshService.existsByRefresh(refreshToken)) {
+            log.debug("Refresh token not found in DB.");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Refresh token not recognized.");
+            return false;
+        }
+
+        // 새 토큰 발급
+        String username = jwtUtil.getUsername(refreshToken);
+        String role = jwtUtil.getRole(refreshToken);
+        String id = jwtUtil.getId(refreshToken);
+
+        String newAccess = jwtUtil.createJwt("access", id, username, role, 600000L);
+        String newRefresh = jwtUtil.createJwt("refresh", id, username, role, 86400000L);
+
+        // DB 갱신
+        refreshService.deleteByRefresh(refreshToken);
+        // 만료일 설정 (1일 후)
+        Date expiration = new Date(System.currentTimeMillis() + 86400000L);
+        String expirationStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(expiration);
+
+        // RefreshEntity 생성 및 저장
+        RefreshEntity refreshEntity = new RefreshEntity();
+        refreshEntity.setId(id);
+        refreshEntity.setUsername(username);
+        refreshEntity.setRefresh(newRefresh);
+        refreshEntity.setExpiration(expirationStr);
+
+        refreshService.insertByRefresh(refreshEntity);
+
+
+        // 쿠키 교체
+        response.addCookie(createCookie("access", newAccess));
+        response.addCookie(createCookie("refresh", newRefresh));
+
+        // 인증 컨텍스트도 새로 설정
+        setupAuthenticationContext(newAccess);
+        return true;
+    }
+
+    private void setupAuthenticationContext(String token) {
+        String id = jwtUtil.getId(token);
+        String username = jwtUtil.getUsername(token);
+        String role = jwtUtil.getRole(token);
+
+        MemberEntity member = new MemberEntity();
+        member.setId(id);
+        member.setUsername(username);
+        member.setRole(role);
+
+        CustomUserDetailsServiceImpl userDetails = new CustomUserDetailsServiceImpl(member);
+        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
     private Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(24*60*60);
-        //cookie.setSecure(true);
+        cookie.setMaxAge(24 * 60 * 60);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-
         return cookie;
     }
 }

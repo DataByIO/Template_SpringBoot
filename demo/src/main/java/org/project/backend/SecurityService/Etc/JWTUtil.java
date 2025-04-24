@@ -29,43 +29,61 @@ public class JWTUtil {
 
     private final SecretKey secretKey;
 
-    public JWTUtil(@Value("${spring.jwt.secret}")String secret) {
-        byte[] byteSecretKey = Decoders.BASE64.decode(secret);
-        secretKey = Keys.hmacShaKeyFor(byteSecretKey);
+    public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
+        this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+    }
+
+    // ✅ 공통 Claims 파싱 메서드
+    private Claims extractClaims(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid JWT token", e);
+        }
     }
 
     public String getId(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get("id", String.class);
+        return extractClaims(token).get("id", String.class);
     }
 
     public String getUsername(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get("username", String.class);
+        return extractClaims(token).get("username", String.class);
     }
 
     public String getRole(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get("role", String.class);
+        return extractClaims(token).get("role", String.class);
     }
 
     public String getCategory(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get("category", String.class);
+        return extractClaims(token).get("category", String.class);
     }
 
-    public void isExpired(String token) {
-        Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getExpiration();
+    // ✅ 명확하게 boolean 리턴하도록 개선
+    public boolean isExpired(String token) {
+        try {
+            Date expiration = extractClaims(token).getExpiration();
+            return expiration.before(new Date());
+        } catch (Exception e) {
+            return true; // 유효하지 않은 토큰은 만료로 간주
+        }
     }
 
-    public String createJwt(String category, String id,String username, String role, Long expiredMs) {
-        Claims claims = (Claims) Jwts.claims();
+    public String createJwt(String category, String id, String username, String role, Long expiredMs) {
+        Claims claims = Jwts.claims();
         claims.put("category", category);
         claims.put("id", id);
         claims.put("username", username);
         claims.put("role", role);
 
-
+        Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiredMs))
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + expiredMs))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }

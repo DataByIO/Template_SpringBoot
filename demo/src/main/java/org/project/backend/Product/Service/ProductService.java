@@ -11,7 +11,6 @@ import java.util.List;
  /* DATA         AUTHOR          DESC.
  /*--------     ---------    ----------------------
  /*2025.03.24   KIMDONGMIN   INTIAL RELEASE
- test
  /*************************************************************/
 
 public interface ProductService {
