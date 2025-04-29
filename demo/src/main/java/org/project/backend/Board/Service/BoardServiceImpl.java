@@ -26,7 +26,6 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public HashMap<String, Object> selectBoard(BoardEntity boardEntity) throws Exception {
-        //
         return BoardMapper.selectBoard(boardEntity);
     }
 
